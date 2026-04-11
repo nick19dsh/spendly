@@ -28,7 +28,7 @@
 
         <div class="hero2-actions">
             <a href="{{ url_for('register') }}" class="hero2-btn-primary">Create free account</a>
-            <a href="{{ url_for('login') }}" class="hero2-btn-secondary">See how it works</a>
+            <button id="btn-how-it-works" class="hero2-btn-secondary">See how it works</button>
         </div>
 
         <div class="hero2-dashboard">
@@ -81,6 +81,24 @@
     </div>
 </section>
 
+<!-- Video modal -->
+<div id="video-modal" class="vmodal-overlay" aria-modal="true" role="dialog" hidden>
+    <div class="vmodal-box">
+        <button class="vmodal-close" id="btn-modal-close" aria-label="Close">&times;</button>
+        <div class="vmodal-video-wrap">
+            <iframe
+                id="video-modal-iframe"
+                src=""
+                data-src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1"
+                title="See how Spendly works"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>
+
 <section class="features">
     <div class="features-inner">
         <div class="feature-card">
@@ -109,4 +127,43 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    const overlay  = document.getElementById('video-modal');
+    const iframe   = document.getElementById('video-modal-iframe');
+    const openBtn  = document.getElementById('btn-how-it-works');
+    const closeBtn = document.getElementById('btn-modal-close');
+
+    function openModal() {
+        iframe.src = iframe.dataset.src;
+        overlay.hidden = false;
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+    }
+
+    function closeModal() {
+        // Clearing src stops the video immediately (works for all browsers)
+        iframe.src = '';
+        overlay.hidden = true;
+        document.body.style.overflow = '';
+        openBtn.focus();
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close on overlay click (but not on the box itself)
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !overlay.hidden) closeModal();
+    });
+})();
+</script>
 {% endblock %}

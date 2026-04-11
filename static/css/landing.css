@@ -218,6 +218,64 @@
 .bar-blue   { background: #3a82e8; }
 .bar-purple { background: #7c5cbf; }
 
+/* ------------------------------------------------------------------ */
+/* Video modal                                                         */
+/* ------------------------------------------------------------------ */
+
+.vmodal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.vmodal-overlay[hidden] { display: none; }
+
+.vmodal-box {
+    position: relative;
+    background: var(--ink);
+    border-radius: var(--radius-md);
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+}
+
+.vmodal-close {
+    position: absolute;
+    top: -2.25rem;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    opacity: 0.8;
+    transition: opacity 0.15s;
+}
+
+.vmodal-close:hover { opacity: 1; }
+
+.vmodal-video-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.vmodal-video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .hero2-stats { grid-template-columns: 1fr 1fr; }
