@@ -70,3 +70,13 @@ def seed_db():
     )
     conn.commit()
     conn.close()
+
+
+def insert_user(name, email, password_hash):
+    conn = get_db()
+    conn.execute(
+        "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
+        (name, email, password_hash),
+    )
+    conn.commit()
+    conn.close()
