@@ -1,0 +1,318 @@
+/* ------------------------------------------------------------------ */
+/* Profile page — all colors via CSS variables, no hardcoded hex       */
+/* ------------------------------------------------------------------ */
+
+.profile-page {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+}
+
+/* --- User info card ------------------------------------------------ */
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    margin-bottom: 24px;
+}
+
+.profile-avatar {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper-card);
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.02em;
+}
+
+.profile-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--ink);
+    margin: 0 0 6px;
+}
+
+.profile-email,
+.profile-since {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    color: var(--ink-muted);
+    margin: 0 0 4px;
+    font-family: var(--font-body);
+}
+
+.profile-email svg,
+.profile-since svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+/* --- Summary stats row -------------------------------------------- */
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.stat-card svg {
+    width: 20px;
+    height: 20px;
+    color: var(--accent);
+}
+
+.stat-value {
+    font-family: var(--font-body);
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.stat-label {
+    font-size: 0.8125rem;
+    color: var(--ink-muted);
+    font-family: var(--font-body);
+}
+
+/* --- Two-column body layout --------------------------------------- */
+
+.profile-body {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 24px;
+    align-items: start;
+}
+
+.profile-section {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 24px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 20px;
+}
+
+.section-title svg {
+    width: 16px;
+    height: 16px;
+    color: var(--ink-muted);
+}
+
+/* --- Transaction table -------------------------------------------- */
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.tx-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+}
+
+.tx-table thead th {
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0 12px 10px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.tx-table thead th.num,
+.tx-table tbody td.num {
+    text-align: right;
+}
+
+.tx-table tbody tr {
+    border-bottom: 1px solid var(--border-soft);
+    transition: background 0.1s;
+}
+
+.tx-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.tx-table tbody tr:hover {
+    background: var(--paper-warm);
+}
+
+.tx-table tbody td {
+    padding: 12px;
+    color: var(--ink-soft);
+    vertical-align: middle;
+}
+
+.tx-date {
+    color: var(--ink-muted) !important;
+    font-size: 0.8125rem !important;
+    white-space: nowrap;
+}
+
+.tx-amount {
+    font-weight: 500;
+    color: var(--ink) !important;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* --- Category badges ---------------------------------------------- */
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: var(--font-body);
+    white-space: nowrap;
+}
+
+.badge--food-dining {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.badge--transport {
+    background: var(--accent-2-light);
+    color: var(--accent-2);
+}
+
+.badge--bills {
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    border: 1px solid var(--border);
+}
+
+.badge--health {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+.badge--entertainment {
+    background: var(--accent-2-light);
+    color: var(--accent-2);
+}
+
+.badge--shopping {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.badge--other {
+    background: var(--paper-warm);
+    color: var(--ink-muted);
+    border: 1px solid var(--border);
+}
+
+/* --- Category breakdown ------------------------------------------- */
+
+.cat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cat-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--font-body);
+}
+
+.cat-name {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+}
+
+.cat-amount {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.cat-bar-track {
+    width: 100%;
+    height: 6px;
+    background: var(--border-soft);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.cat-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: var(--radius-sm);
+    transition: width 0.4s ease;
+}
+
+/* --- Responsive --------------------------------------------------- */
+
+@media (max-width: 900px) {
+    .profile-body {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px;
+    }
+
+    .profile-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-page {
+        padding: 24px 16px 48px;
+    }
+}
