@@ -22,7 +22,7 @@ def landing():
 def register():
     if request.method == "GET":
         if "user_id" in session:
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("profile"))
         return render_template("register.html")
 
     name     = request.form.get("name", "").strip()
@@ -59,7 +59,7 @@ def register():
 def login():
     if request.method == "GET":
         if "user_id" in session:
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("profile"))
         return render_template("login.html")
 
     email    = request.form.get("email", "").strip()
@@ -73,7 +73,7 @@ def login():
     session.clear()
     session["user_id"]   = user["id"]
     session["user_name"] = user["name"]
-    return redirect(url_for("dashboard"))
+    return redirect(url_for("profile"))
 
 
 @app.route("/terms")
@@ -105,7 +105,38 @@ def dashboard():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    user = {
+        "name": "Priya Sharma",
+        "email": "priya@example.com",
+        "member_since": "January 2025",
+        "initials": "PS",
+    }
+    stats = {
+        "total_spent": "₹24,850",
+        "transaction_count": 38,
+        "top_category": "Food & Dining",
+    }
+    transactions = [
+        {"date": "24 Apr 2026", "description": "Swiggy order",         "category": "Food & Dining",  "amount": "₹340"},
+        {"date": "23 Apr 2026", "description": "Metro card recharge",   "category": "Transport",      "amount": "₹500"},
+        {"date": "22 Apr 2026", "description": "Electricity bill",      "category": "Bills",          "amount": "₹1,820"},
+        {"date": "21 Apr 2026", "description": "Pharmacy",              "category": "Health",         "amount": "₹275"},
+        {"date": "20 Apr 2026", "description": "BookMyShow",            "category": "Entertainment",  "amount": "₹420"},
+    ]
+    categories = [
+        {"name": "Food & Dining",  "amount": "₹8,400", "percent": 34},
+        {"name": "Bills",          "amount": "₹6,200", "percent": 25},
+        {"name": "Transport",      "amount": "₹3,900", "percent": 16},
+        {"name": "Health",         "amount": "₹2,950", "percent": 12},
+        {"name": "Entertainment",  "amount": "₹2,100", "percent": 8},
+        {"name": "Shopping",       "amount": "₹1,300", "percent": 5},
+    ]
+    return render_template("profile.html",
+                           user=user, stats=stats,
+                           transactions=transactions, categories=categories)
 
 
 @app.route("/expenses/add")
