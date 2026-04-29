@@ -16,6 +16,33 @@
         </div>
     </div>
 
+    <section class="filter-bar">
+        <div class="filter-presets">
+            <a href="{{ url_for('profile', date_from=presets.this_month.date_from, date_to=presets.this_month.date_to) }}"
+               class="preset-btn{% if date_from == presets.this_month.date_from and date_to == presets.this_month.date_to %} preset-btn--active{% endif %}">
+                This Month
+            </a>
+            <a href="{{ url_for('profile', date_from=presets.last_3_months.date_from, date_to=presets.last_3_months.date_to) }}"
+               class="preset-btn{% if date_from == presets.last_3_months.date_from and date_to == presets.last_3_months.date_to %} preset-btn--active{% endif %}">
+                Last 3 Months
+            </a>
+            <a href="{{ url_for('profile', date_from=presets.last_6_months.date_from, date_to=presets.last_6_months.date_to) }}"
+               class="preset-btn{% if date_from == presets.last_6_months.date_from and date_to == presets.last_6_months.date_to %} preset-btn--active{% endif %}">
+                Last 6 Months
+            </a>
+            <a href="{{ url_for('profile') }}"
+               class="preset-btn{% if not date_from and not date_to %} preset-btn--active{% endif %}">
+                All Time
+            </a>
+        </div>
+        <form class="filter-custom" method="get" action="{{ url_for('profile') }}">
+            <input type="date" name="date_from" value="{{ date_from or '' }}" class="date-input">
+            <span class="filter-sep">to</span>
+            <input type="date" name="date_to" value="{{ date_to or '' }}" class="date-input">
+            <button type="submit" class="filter-apply-btn">Apply</button>
+        </form>
+    </section>
+
     <div class="profile-stats">
         <div class="stat-card">
             <i data-lucide="indian-rupee"></i>
@@ -76,7 +103,7 @@
                         <span class="cat-amount">{{ cat.amount }}</span>
                     </div>
                     <div class="cat-bar-track">
-                        <div class="cat-bar-fill" style="width: {{ cat.percent }}%"></div>
+                        <div class="cat-bar-fill" style="--bar-width: {{ cat.percent }}%"></div>
                     </div>
                 </div>
                 {% endfor %}
