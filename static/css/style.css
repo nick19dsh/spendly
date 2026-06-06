@@ -441,6 +441,11 @@ a { color: inherit; text-decoration: none; }
     margin-bottom: 0.4rem;
 }
 
+.label-hint {
+    color: var(--ink-faint);
+    font-weight: 400;
+}
+
 .form-input {
     width: 100%;
     padding: 0.6rem 0.875rem;

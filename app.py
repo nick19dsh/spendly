@@ -1,10 +1,13 @@
 import re
 import sqlite3
 from datetime import date, datetime
+# Pre-load _strptime to prevent Werkzeug's reloader from treating its lazy import as a file
+# change mid-request and restarting the server. See https://bugs.python.org/issue7980
+datetime.strptime("2000-01-01", "%Y-%m-%d")
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from database.db import get_db, init_db, seed_db, insert_user, get_user_by_email
+from database.db import get_db, init_db, seed_db, insert_user, get_user_by_email, insert_expense
 from database.queries import (
     get_user_by_id,
     get_summary_stats,
@@ -172,9 +175,54 @@ def analytics():
     return render_template("analytics.html")
 
 
-@app.route("/expenses/add")
+EXPENSE_CATEGORIES = ["Food", "Transport", "Bills", "Health", "Entertainment", "Shopping", "Other"]
+
+
+@app.route("/expenses/add", methods=["GET", "POST"])
 def add_expense():
-    return "Add expense — coming in Step 7"
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "GET":
+        return render_template("add_expense.html",
+                               categories=EXPENSE_CATEGORIES,
+                               today=date.today().isoformat())
+
+    amount_raw   = request.form.get("amount", "").strip()
+    category     = request.form.get("category", "").strip()
+    expense_date = request.form.get("date", "").strip()
+    description  = request.form.get("description", "").strip()
+
+    def re_render(msg):
+        flash(msg, "error")
+        return render_template("add_expense.html", categories=EXPENSE_CATEGORIES,
+                               amount=amount_raw, category=category,
+                               expense_date=expense_date, description=description,
+                               today=date.today().isoformat())
+
+    try:
+        amount = float(amount_raw)
+        if amount <= 0 or amount > 1_000_000:
+            raise ValueError
+    except ValueError:
+        return re_render("Amount must be a number between ₹0.01 and ₹10,00,000.")
+
+    if category not in EXPENSE_CATEGORIES:
+        return re_render("Please select a valid category.")
+
+    if not expense_date:
+        return re_render("Date is required.")
+    try:
+        datetime.strptime(expense_date, "%Y-%m-%d")
+    except ValueError:
+        return re_render("Date must be in YYYY-MM-DD format.")
+
+    if description and len(description) > 200:
+        return re_render("Description must be 200 characters or fewer.")
+
+    insert_expense(session["user_id"], amount, category, expense_date, description or None)
+    flash("Expense added.", "success")
+    return redirect(url_for("profile"))
 
 
 @app.route("/expenses/<int:id>/edit")
