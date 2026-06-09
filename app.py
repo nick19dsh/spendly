@@ -7,7 +7,7 @@ datetime.strptime("2000-01-01", "%Y-%m-%d")
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
-from database.db import get_db, init_db, seed_db, insert_user, get_user_by_email, insert_expense, get_expense_by_id, update_expense
+from database.db import get_db, init_db, seed_db, insert_user, get_user_by_email, insert_expense, get_expense_by_id, update_expense, delete_expense as db_delete_expense
 from database.queries import (
     get_user_by_id,
     get_summary_stats,
@@ -269,9 +269,20 @@ def edit_expense(id):
     return redirect(url_for("profile"))
 
 
-@app.route("/expenses/<int:id>/delete")
+@app.route("/expenses/<int:id>/delete", methods=["POST"])
 def delete_expense(id):
-    return "Delete expense — coming in Step 9"
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    expense = get_expense_by_id(id)
+    if expense is None:
+        abort(404)
+    if expense["user_id"] != session["user_id"]:
+        abort(403)
+
+    db_delete_expense(id, session["user_id"])
+    flash("Expense deleted.", "success")
+    return redirect(url_for("profile"))
 
 
 with app.app_context():
