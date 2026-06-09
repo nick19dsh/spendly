@@ -63,7 +63,7 @@ def get_recent_transactions(user_id, limit=10, date_from=None, date_to=None):
     date_sql, date_params = _date_clause(date_from, date_to)
     try:
         rows = db.execute(
-            "SELECT date, description, category, amount "
+            "SELECT id, date, description, category, amount "
             "FROM expenses WHERE user_id = ?" + date_sql +
             " ORDER BY date DESC LIMIT ?",
             (user_id, *date_params, limit),
@@ -75,6 +75,7 @@ def get_recent_transactions(user_id, limit=10, date_from=None, date_to=None):
                 parsed.day, parsed.strftime("%b"), parsed.strftime("%Y")
             )
             result.append({
+                "id": row["id"],
                 "date": formatted_date,
                 "description": row["description"],
                 "category": row["category"],
